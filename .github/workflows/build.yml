@@ -1,0 +1,25 @@
+name: Build GritBox
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - name: Upload VST3 (Windows)
+        uses: actions/upload-artifact@v4
+        with:
+          name: GritBox-Windows-VST3
+          path: build/GritBox_artefacts/Release/VST3/
+      - name: Upload standalone test app (Windows)
+        uses: actions/upload-artifact@v4
+        with:
+          name: GritBox-Windows-Standalone
+          path: build/GritBox_artefacts/Release/Standalone/GritBox.exe
